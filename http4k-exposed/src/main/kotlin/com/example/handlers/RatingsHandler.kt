@@ -16,15 +16,15 @@ class RatingsHandler {
 
     private val ratingsService = RatingsServiceImpl()
 
+    private val ratingIdLens = Path.nonEmptyString().map(String::toLong).of("rating_id")
+    private val offeringIdLens = Path.nonEmptyString().map(String::toLong).of("offering_id")
+
     fun index() = { _: Request ->
         val ratingsLens = Body.auto<Iterable<Rating>>().toLens()
         val result = ratingsService.findAll()
 
         Response(Status.OK).with(ratingsLens of result)
     }
-
-    private val ratingIdLens = Path.nonEmptyString().map(String::toLong).of("rating_id")
-    private val offeringIdLens = Path.nonEmptyString().of("offering_id")
 
     fun indexByOffering() = { request: Request ->
         val offeringId = offeringIdLens(request)
@@ -48,7 +48,7 @@ class RatingsHandler {
         val ratingRequestLens = Body.auto<RatingRequest>().toLens()
         val ratingLens = Body.auto<Rating>().toLens()
 
-        val result = ratingsService.create(ratingRequestLens(request))
+        val result = ratingsService.create(ratingRequestLens(request), offeringId)
 
         ratingLens(result, Response(Status.OK))
     }

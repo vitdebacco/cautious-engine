@@ -7,6 +7,5 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 data class RatingRequest(
     val value: Int,
     val comment: String,
-    val offeringId: String,
     val username: String
 )

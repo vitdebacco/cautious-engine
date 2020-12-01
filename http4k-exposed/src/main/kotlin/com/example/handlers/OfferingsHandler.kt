@@ -3,6 +3,7 @@ package com.example.handlers
 import com.example.com.example.models.api.OfferingCreateRequest
 import com.example.com.example.models.api.OfferingUpdateRequest
 import com.example.models.data.Offering
+import com.example.services.OfferingsService
 import com.example.services.OfferingsServiceImpl
 import org.http4k.core.Body
 import org.http4k.core.Request
@@ -13,18 +14,16 @@ import org.http4k.format.Jackson.auto
 import org.http4k.lens.Path
 import org.http4k.lens.nonEmptyString
 
-class OfferingsHandler {
+class OfferingsHandler(private val offeringsService: OfferingsService) {
 
-    private val offeringsService = OfferingsServiceImpl()
+    private val offeringIdLens = Path.nonEmptyString().map(String::toLong).of("offering_id")
 
-    fun index(): Response {
+    fun index() = { _: Request ->
         val offeringsLens = Body.auto<Iterable<Offering>>().toLens()
         val offerings = offeringsService.getAll()
 
-        return Response(Status.OK).with(offeringsLens of offerings)
+        Response(Status.OK).with(offeringsLens of offerings)
     }
-
-    private val offeringIdLens = Path.nonEmptyString().of("offering_id")
 
     fun show() = { request: Request ->
         val offeringId = offeringIdLens(request)
@@ -40,7 +39,7 @@ class OfferingsHandler {
         val offeringLens = Body.auto<Offering>().toLens()
 
         val result = offeringsService.create(offeringCreateLens(request))
-        offeringLens(result, Response(Status.OK))
+        offeringLens(result, Response(Status.CREATED))
     }
 
     fun update() = { request: Request ->

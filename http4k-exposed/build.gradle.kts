@@ -1,11 +1,17 @@
 
 // Defined in `gradle.properties`
-val exposed_version: String by project
-val logback_version: String by project
+val exposedVersion: String by project
+val hikariVersion: String by project
+val http4kVersion: String by project
+val kotestVersion: String by project
+val logbackVersion: String by project
+val postgresConnectorVersion: String by project
 
 plugins {
     application
     kotlin("jvm") version "1.4.10"
+    id("com.adarshr.test-logger") version "2.0.0"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 group = "com.example"
@@ -20,22 +26,30 @@ repositories {
     maven { url = uri("https://dl.bintray.com/kotlin/exposed") }
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(platform("org.http4k:http4k-bom:3.268.0"))
-    implementation("org.http4k:http4k-core")
-    implementation("org.http4k:http4k-server-netty:3.268.0")
-    implementation("org.http4k:http4k-format-jackson:3.268.0")
+    implementation(platform("org.http4k:http4k-bom:$http4kVersion"))
+    implementation("org.http4k:http4k-core:$http4kVersion")
+    implementation("org.http4k:http4k-server-netty:$http4kVersion")
+    implementation("org.http4k:http4k-format-jackson:$http4kVersion")
 
     // Exposed ORM library
-    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-    implementation("com.zaxxer:HikariCP:3.4.5") // JDBC Connection Pool
-    implementation("org.postgresql:postgresql:42.2.1") // JDBC Connector for PostgreSQL
+    implementation("com.zaxxer:HikariCP:$hikariVersion") // JDBC Connection Pool
+    implementation("org.postgresql:postgresql:$postgresConnectorVersion") // JDBC Connector for PostgreSQL
+
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+//    testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
+    testImplementation("io.mockk:mockk:1.9.3")
 }

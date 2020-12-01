@@ -12,28 +12,26 @@ import java.util.UUID
 interface RatingsService {
     fun findAll(): Iterable<Rating>
     fun findById(id: Long): Rating
-    fun create(ratingRequest: RatingRequest): Rating
+    fun create(ratingRequest: RatingRequest, offeringId: Long): Rating
     fun update(id: Long, ratingRequest: RatingRequest): Rating
     fun delete(id: Long): Rating
 }
 
-class RatingsServiceImpl: RatingsService {
+class RatingsServiceImpl : RatingsService {
     override fun findAll(): Iterable<Rating> = transaction {
         RatingEntity.all().map(RatingEntity::toRating)
     }
 
-    fun findAllByOfferingId(offeringId: String): Iterable<Rating> = transaction {
-        val offeringUUID = UUID.fromString(offeringId)
-
-        RatingEntity.find { Ratings.offering eq offeringUUID }.map(RatingEntity::toRating)
+    fun findAllByOfferingId(offeringId: Long): Iterable<Rating> = transaction {
+        RatingEntity.find { Ratings.offering eq offeringId }.map(RatingEntity::toRating)
     }
 
     override fun findById(id: Long): Rating = transaction {
         RatingEntity[id].toRating()
     }
 
-    override fun create(ratingRequest: RatingRequest): Rating = transaction {
-        val offering = getOffering(ratingRequest.offeringId)
+    override fun create(ratingRequest: RatingRequest, offeringId: Long): Rating = transaction {
+        val offering = getOffering(offeringId)
 
         RatingEntity.new {
             this.value = ratingRequest.value
@@ -63,8 +61,7 @@ class RatingsServiceImpl: RatingsService {
     }
 
     // This should leveraged [OfferingsService] for this
-    private fun getOffering(offeringId: String): OfferingEntity {
-        val offeringUuid = UUID.fromString(offeringId)
-        return OfferingEntity[offeringUuid]
+    private fun getOffering(offeringId: Long): OfferingEntity {
+        return OfferingEntity[offeringId]
     }
 }

@@ -2,16 +2,18 @@ package com.example.models.data
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming
-import org.jetbrains.exposed.dao.UUIDEntity
-import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.IntEntity
+import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.dao.LongEntity
+import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.dao.id.UUIDTable
+import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.`java-time`.timestamp
 import java.net.URL
 import java.time.Instant
-import java.util.UUID
 
-object Offerings : UUIDTable() {
+object Offerings : LongIdTable() {
     val name = varchar("name", 50)
     val tastingNotes = varchar("tasting_notes", 50)
     val description = text("description")
@@ -22,8 +24,8 @@ object Offerings : UUIDTable() {
     val deletedAt = timestamp("deleted_at").nullable()
 }
 
-class OfferingEntity(id: EntityID<UUID>) : UUIDEntity(id) {
-    companion object : UUIDEntityClass<OfferingEntity>(Offerings)
+class OfferingEntity(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<OfferingEntity>(Offerings)
 
     var name by Offerings.name
     var tastingNotes by Offerings.tastingNotes
@@ -51,7 +53,7 @@ class OfferingEntity(id: EntityID<UUID>) : UUIDEntity(id) {
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
 data class Offering(
-    val id: UUID,
+    val id: Long,
     val name: String,
     val tastingNotes: String,
     val description: String,

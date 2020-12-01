@@ -10,10 +10,10 @@ import java.util.UUID
 
 interface OfferingsService {
     fun getAll(): Iterable<Offering>
-    fun getById(id: String): Offering?
+    fun getById(id: Long): Offering?
     fun create(offeringCreateRequest: OfferingCreateRequest): Offering
-    fun update(id: String, offeringUpdateRequest: OfferingUpdateRequest): Offering
-    fun delete(id: String): Offering
+    fun update(id: Long, offeringUpdateRequest: OfferingUpdateRequest): Offering
+    fun delete(id: Long): Offering
 }
 
 class OfferingsServiceImpl: OfferingsService {
@@ -22,8 +22,8 @@ class OfferingsServiceImpl: OfferingsService {
         OfferingEntity.all().map(OfferingEntity::toOffering)
     }
 
-    override fun getById(id: String): Offering? = transaction {
-        OfferingEntity.findById(UUID.fromString(id))?.toOffering()
+    override fun getById(id: Long): Offering? = transaction {
+        OfferingEntity.findById(id)?.toOffering()
     }
 
     override fun create(offeringCreateRequest: OfferingCreateRequest): Offering = transaction {
@@ -38,21 +38,18 @@ class OfferingsServiceImpl: OfferingsService {
     }
 
     // TODO: change Offering to OfferingCreateRequest
-    override fun update(id: String, offeringUpdateRequest: OfferingUpdateRequest): Offering = transaction {
+    override fun update(id: Long, offeringUpdateRequest: OfferingUpdateRequest): Offering = transaction {
         val now = Instant.now()
-        val uuid = UUID.fromString(id)
 
-        OfferingEntity[uuid].apply {
+        OfferingEntity[id].apply {
             description = offeringUpdateRequest.description
             updatedAt = now
         }.toOffering()
     }
 
-    override fun delete(id: String): Offering = transaction {
-        val uuid = UUID.fromString(id)
-
-        val result = OfferingEntity[uuid].toOffering().copy(deletedAt = Instant.now())
-        OfferingEntity[uuid].delete()
+    override fun delete(id: Long): Offering = transaction {
+        val result = OfferingEntity[id].toOffering().copy(deletedAt = Instant.now())
+        OfferingEntity[id].delete()
 
         result
     }

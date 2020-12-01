@@ -1,2 +1,2 @@
-rootProject.name = "http4k-kodein-exposed"
+rootProject.name = "http4k-exposed"
 

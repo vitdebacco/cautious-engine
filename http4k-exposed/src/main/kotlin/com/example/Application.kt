@@ -3,6 +3,7 @@ package com.example
 import com.example.config.initDB
 import com.example.handlers.OfferingsHandler
 import com.example.handlers.RatingsHandler
+import com.example.services.OfferingsServiceImpl
 import org.http4k.core.Body
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method
@@ -24,13 +25,17 @@ fun main() {
 
 class Application {
     fun handlers(): HttpHandler {
-        val offeringsHandler = OfferingsHandler()
+        // services
+        val offeringsService = OfferingsServiceImpl()
+
+        // handlers
+        val offeringsHandler = OfferingsHandler(OfferingsServiceImpl())
         val ratingsHandler = RatingsHandler()
 
         return routes(
             "/health_check" bind Method.GET to healthCheck(),
             "/offerings" bind routes(
-                "/" bind Method.GET to { offeringsHandler.index() },
+                "/" bind Method.GET to offeringsHandler.index(),
                 "/" bind Method.POST to offeringsHandler.create(),
                 "/{offering_id}" bind routes(
                     "/" bind Method.GET to offeringsHandler.show(),
@@ -38,7 +43,8 @@ class Application {
                     "/" bind Method.DELETE to offeringsHandler.delete(),
 
                     "/ratings" bind Method.GET to ratingsHandler.indexByOffering(),
-                    "/ratings" bind Method.POST to ratingsHandler.create()
+                    "/ratings" bind Method.POST to ratingsHandler.create(),
+                    "/ratings" bind Method.DELETE to ratingsHandler.delete()
                 )
             )
         )
