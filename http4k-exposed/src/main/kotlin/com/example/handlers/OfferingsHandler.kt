@@ -1,10 +1,10 @@
 package com.example.handlers
 
-import com.example.com.example.models.api.OfferingCreateRequest
-import com.example.com.example.models.api.OfferingUpdateRequest
+import com.example.exceptions.NotFoundException
+import com.example.models.api.OfferingCreateRequest
+import com.example.models.api.OfferingUpdateRequest
 import com.example.models.data.Offering
 import com.example.services.OfferingsService
-import com.example.services.OfferingsServiceImpl
 import org.http4k.core.Body
 import org.http4k.core.Request
 import org.http4k.core.Response
@@ -28,7 +28,8 @@ class OfferingsHandler(private val offeringsService: OfferingsService) {
     fun show() = { request: Request ->
         val offeringId = offeringIdLens(request)
 
-        val offering = offeringsService.getById(offeringId) ?: throw Exception("Not Found")
+        val offering = offeringsService.getById(offeringId)
+            ?: throw NotFoundException("offering not found for id: $offeringId")
 
         val offeringLens = Body.auto<Offering>().toLens()
         offeringLens(offering, Response(Status.OK))

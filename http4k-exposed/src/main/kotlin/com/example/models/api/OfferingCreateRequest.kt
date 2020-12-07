@@ -1,4 +1,4 @@
-package com.example.com.example.models.api
+package com.example.models.api
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming

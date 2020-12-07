@@ -1,12 +1,11 @@
 package com.example.services
 
-import com.example.com.example.models.api.OfferingCreateRequest
-import com.example.com.example.models.api.OfferingUpdateRequest
+import com.example.models.api.OfferingCreateRequest
+import com.example.models.api.OfferingUpdateRequest
 import com.example.models.data.Offering
 import com.example.models.data.OfferingEntity
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Instant
-import java.util.UUID
 
 interface OfferingsService {
     fun getAll(): Iterable<Offering>
@@ -16,7 +15,7 @@ interface OfferingsService {
     fun delete(id: Long): Offering
 }
 
-class OfferingsServiceImpl: OfferingsService {
+class OfferingsServiceImpl : OfferingsService {
 
     override fun getAll(): Iterable<Offering> = transaction {
         OfferingEntity.all().map(OfferingEntity::toOffering)

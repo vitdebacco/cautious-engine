@@ -1,5 +1,6 @@
 package com.example.models.data
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 import org.jetbrains.exposed.dao.IntEntity
@@ -52,6 +53,7 @@ class OfferingEntity(id: EntityID<Long>) : LongEntity(id) {
 }
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Offering(
     val id: Long,
     val name: String,

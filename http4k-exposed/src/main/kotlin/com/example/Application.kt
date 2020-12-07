@@ -1,6 +1,7 @@
 package com.example
 
 import com.example.config.initDB
+import com.example.filters.ExceptionResolver
 import com.example.handlers.OfferingsHandler
 import com.example.handlers.RatingsHandler
 import com.example.services.OfferingsServiceImpl
@@ -10,6 +11,7 @@ import org.http4k.core.Method
 import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status
+import org.http4k.core.then
 import org.http4k.core.with
 import org.http4k.format.Jackson.auto
 import org.http4k.routing.bind
@@ -32,19 +34,21 @@ class Application {
         val offeringsHandler = OfferingsHandler(OfferingsServiceImpl())
         val ratingsHandler = RatingsHandler()
 
-        return routes(
-            "/health_check" bind Method.GET to healthCheck(),
-            "/offerings" bind routes(
-                "/" bind Method.GET to offeringsHandler.index(),
-                "/" bind Method.POST to offeringsHandler.create(),
-                "/{offering_id}" bind routes(
-                    "/" bind Method.GET to offeringsHandler.show(),
-                    "/" bind Method.PUT to offeringsHandler.update(),
-                    "/" bind Method.DELETE to offeringsHandler.delete(),
+        return ExceptionResolver().then(
+            routes(
+                "/health_check" bind Method.GET to healthCheck(),
+                "/offerings" bind routes(
+                    "/" bind Method.GET to offeringsHandler.index(),
+                    "/" bind Method.POST to offeringsHandler.create(),
+                    "/{offering_id}" bind routes(
+                        "/" bind Method.GET to offeringsHandler.show(),
+                        "/" bind Method.PUT to offeringsHandler.update(),
+                        "/" bind Method.DELETE to offeringsHandler.delete(),
 
-                    "/ratings" bind Method.GET to ratingsHandler.indexByOffering(),
-                    "/ratings" bind Method.POST to ratingsHandler.create(),
-                    "/ratings" bind Method.DELETE to ratingsHandler.delete()
+                        "/ratings" bind Method.GET to ratingsHandler.indexByOffering(),
+                        "/ratings" bind Method.POST to ratingsHandler.create(),
+                        "/ratings" bind Method.DELETE to ratingsHandler.delete()
+                    )
                 )
             )
         )
