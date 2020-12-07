@@ -2,6 +2,7 @@ package com.cautiousengine.apitests
 
 import io.restassured.RestAssured.given
 import io.restassured.module.kotlin.extensions.When
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.util.UUID
@@ -31,6 +32,25 @@ class OfferingsTest {
                 .When { get(ROUTE) }
                 .then()
                 .statusCode(200)
+        }
+    }
+
+    @Nested
+    inner class Show {
+
+        @Nested
+        inner class InvalidId {
+
+            @Test
+            fun `returns 404 not found`() {
+                val id = 9999
+                given()
+                    .When { get("$ROUTE/$id") }
+                    .then()
+                    .statusCode(404)
+                    .body("message", equalTo("offering not found for id: $id"))
+            }
+
         }
     }
 
