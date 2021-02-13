@@ -22,6 +22,7 @@ application {
 }
 
 repositories {
+    jcenter()
     mavenCentral()
     maven { url = uri("https://dl.bintray.com/kotlin/exposed") }
 }
@@ -36,6 +37,7 @@ dependencies {
     implementation("org.http4k:http4k-core:$http4kVersion")
     implementation("org.http4k:http4k-server-netty:$http4kVersion")
     implementation("org.http4k:http4k-format-jackson:$http4kVersion")
+    implementation("org.http4k:http4k-metrics-micrometer:$http4kVersion")
 
     // Exposed ORM library
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")

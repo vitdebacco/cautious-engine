@@ -1,6 +1,7 @@
 package com.cautiousengine.apitests
 
 import io.restassured.RestAssured.given
+import io.restassured.RestAssured.post
 import io.restassured.module.kotlin.extensions.When
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Nested
@@ -39,16 +40,27 @@ class OfferingsTest {
     inner class Show {
 
         @Nested
+        inner class ValidId {
+
+            @Test
+            fun `returns 200 ok with expected payload`() {
+
+
+            }
+        }
+
+        @Nested
         inner class InvalidId {
 
             @Test
             fun `returns 404 not found`() {
-                val id = 9999
+                val invalidId = 99999999
+
                 given()
-                    .When { get("$ROUTE/$id") }
+                    .When { get("$ROUTE/$invalidId") }
                     .then()
                     .statusCode(404)
-                    .body("message", equalTo("offering not found for id: $id"))
+                    .body("message", equalTo("offering not found for id: $invalidId"))
             }
 
         }
@@ -57,12 +69,35 @@ class OfferingsTest {
     @Nested
     inner class Create {
 
-        @Test
-        fun `create offerings returns 201 Created`() {
-            given().body(offeringJson)
-                .When { post(ROUTE) }
-                .then()
-                .statusCode(201)
+        @Nested
+        inner class Valid {
+            @Test
+            fun `returns 201 Created`() {
+                given().body(offeringJson)
+                    .When { post(ROUTE) }
+                    .then()
+                    .statusCode(201)
+            }
+
+        }
+
+        @Nested
+        inner class Invalid {
+            @Nested
+            inner class NonUniqueOfferingUrl {
+
+                @Test
+                fun `returns 409 conflict`() {
+                    given().body(offeringJson)
+                        .When {
+                            post(ROUTE)
+                            post(ROUTE)
+                        }
+                        .then()
+                        .statusCode(409)
+                }
+            }
+
         }
     }
 

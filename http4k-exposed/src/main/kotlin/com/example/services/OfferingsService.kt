@@ -1,9 +1,12 @@
 package com.example.services
 
+import com.example.exceptions.ConflictException
+import com.example.exceptions.UnknownException
 import com.example.models.api.OfferingCreateRequest
 import com.example.models.api.OfferingUpdateRequest
 import com.example.models.data.Offering
 import com.example.models.data.OfferingEntity
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Instant
 
@@ -26,14 +29,22 @@ class OfferingsServiceImpl : OfferingsService {
     }
 
     override fun create(offeringCreateRequest: OfferingCreateRequest): Offering = transaction {
-        OfferingEntity.new {
-            name = offeringCreateRequest.name
-            description = offeringCreateRequest.description
-            tastingNotes = offeringCreateRequest.tastingNotes
-            roasterName = offeringCreateRequest.roasterName
-            url = offeringCreateRequest.url.toString()
-            createdAt = Instant.now()
-        }.toOffering()
+        try {
+            OfferingEntity.new {
+                name = offeringCreateRequest.name
+                description = offeringCreateRequest.description
+                tastingNotes = offeringCreateRequest.tastingNotes
+                roasterName = offeringCreateRequest.roasterName
+                url = offeringCreateRequest.url.toString()
+                createdAt = Instant.now()
+            }.toOffering()
+        } catch (e: ExposedSQLException) {
+            // For more Postgres error codes, see: https://www.postgresql.org/docs/10/errcodes-appendix.html
+            when (e.sqlState.toInt()) {
+                23505 -> throw ConflictException(message = e.message ?: "", e)
+                else -> throw UnknownException(message = e.message ?: "An unknown exception occurred", e)
+            }
+        }
     }
 
     // TODO: change Offering to OfferingCreateRequest
