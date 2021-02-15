@@ -10,13 +10,18 @@ import kotlin.random.nextInt
 @Service
 class AddressServiceImpl : AddressService {
 
+    companion object {
+        private const val MIN_RESULTS = 1
+    }
+
     private val faker = Faker()
 
     override fun many(limit: Int): List<Address> {
-        var numResults = Random.nextInt(0..limit)
         val result = mutableListOf<Address>()
+        val numResults = Random.nextInt(MIN_RESULTS..limit)
+        val resultsRange = MIN_RESULTS..numResults
 
-        while (--numResults >= 0) {
+        for (i in resultsRange) {
             result.add(generateAddress())
         }
 
