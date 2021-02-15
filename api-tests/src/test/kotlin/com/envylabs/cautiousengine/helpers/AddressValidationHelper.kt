@@ -16,11 +16,11 @@ object AddressValidationHelper {
         vr.body("state", CoreMatchers.isA(String::class.java))
         vr.body("state", Matchers.notNullValue())
 
-        vr.body("zipCode", CoreMatchers.isA(String::class.java))
-        vr.body("zipCode", Matchers.notNullValue())
+        vr.body("zip_code", CoreMatchers.isA(String::class.java))
+        vr.body("zip_code", Matchers.notNullValue())
 
-        vr.body("createdAt", CoreMatchers.isA(String::class.java))
-        vr.body("createdAt", Matchers.notNullValue())
+        vr.body("created_at", CoreMatchers.isA(String::class.java))
+        vr.body("created_at", Matchers.notNullValue())
     }
 
     fun validateAddressesBodyArrayElement(vr: ValidatableResponse, element: Int = 0) {
@@ -33,10 +33,10 @@ object AddressValidationHelper {
         vr.body("addresses[$element].state", CoreMatchers.isA(String::class.java))
         vr.body("addresses[$element].state", Matchers.notNullValue())
 
-        vr.body("addresses[$element].zipCode", CoreMatchers.isA(String::class.java))
-        vr.body("addresses[$element].zipCode", Matchers.notNullValue())
+        vr.body("addresses[$element].zip_code", CoreMatchers.isA(String::class.java))
+        vr.body("addresses[$element].zip_code", Matchers.notNullValue())
 
-        vr.body("addresses[$element].createdAt", CoreMatchers.isA(String::class.java))
-        vr.body("addresses[$element].createdAt", Matchers.notNullValue())
+        vr.body("addresses[$element].created_at", CoreMatchers.isA(String::class.java))
+        vr.body("addresses[$element].created_at", Matchers.notNullValue())
     }
 }
