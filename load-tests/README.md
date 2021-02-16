@@ -1,0 +1,1 @@
+These load tests are based off of the [Micronaut Comparisons repo](https://github.com/micronaut-projects/micronaut-comparisons)
