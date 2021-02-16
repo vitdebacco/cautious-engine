@@ -6,6 +6,15 @@ import io.gatling.http.Predef._
 import scala.concurrent.duration._
 import scala.util.Random
 
+/**
+ * This is a slightly modified version of the JHipster simulation from the Micronaut comparisons repo.
+ *
+ * Micronaut Comparisons Repo
+ * https://github.com/micronaut-projects/micronaut-comparisons
+ *
+ * Original Simulation
+ * https://github.com/micronaut-projects/micronaut-comparisons/blob/master/loadtests/src/gatling/simulations/com/example/JHipsterSimulation.scala
+ */
 class CautiousEngineSimulation extends Simulation {
   val httpConf = http
     .baseUrl(baseUrl)
