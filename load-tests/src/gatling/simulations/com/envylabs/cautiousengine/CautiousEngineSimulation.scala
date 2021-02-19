@@ -3,6 +3,7 @@ package com.envylabs.cautiousengine
 import io.gatling.core.Predef.{exec, _}
 import io.gatling.http.Predef._
 
+import java.util.UUID
 import scala.concurrent.duration._
 import scala.util.Random
 
@@ -51,7 +52,7 @@ class CautiousEngineSimulation extends Simulation {
 
   def getAddress() = {
     exec(http("address")
-      .get("/addresses/" + Random.nextInt())
+      .get("/addresses/" + UUID.randomUUID())
       .check(status.is(200)))
   }
 
