@@ -1,9 +1,8 @@
 package com.envylabs.cautiousengine
 
+import com.envylabs.cautiousengine.config.PrometheusConfig
 import com.envylabs.cautiousengine.handlers.AddressesHandler
 import com.envylabs.cautiousengine.services.faker.AddressServiceImpl
-import io.micrometer.prometheus.PrometheusConfig
-import io.micrometer.prometheus.PrometheusMeterRegistry
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method
 import org.http4k.core.Response
@@ -30,7 +29,7 @@ class App {
         val addressesHandler = AddressesHandler(addressService = addressService)
 
         return routes(
-            "/actuator/metrics" bind Method.GET to { Response(Status.OK).body(meterRegistry.scrape()) },
+            "/metrics" bind Method.GET to { Response(Status.OK).body(meterRegistry.scrape()) },
             "/addresses" bind routes(
                 "/" bind Method.GET to addressesHandler.index(),
                 "/{id}" bind routes(
@@ -41,4 +40,4 @@ class App {
     }
 }
 
-val meterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+val meterRegistry = PrometheusConfig.meterRegistry()
