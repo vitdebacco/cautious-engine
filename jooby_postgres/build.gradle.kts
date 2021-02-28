@@ -10,6 +10,7 @@ val jacksonVersion: String by project
 val javaFakerVersion: String by project
 val joobyVersion: String by project
 val kotlinVersion: String by project
+val micrometerVersion: String by project
 
 group = "com.envylabs.cautiousengine"
 version = "1.0-SNAPSHOT"
@@ -36,4 +37,8 @@ dependencies {
 
     // JavaFaker for random data
     implementation("com.github.javafaker:javafaker:$javaFakerVersion")
+
+    // Instrumentation with Micrometer
+    implementation("io.micrometer:micrometer-core:$micrometerVersion")
+    implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
 }
