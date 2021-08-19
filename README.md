@@ -33,6 +33,13 @@ Longer term thoughts for additions.
 - Dependency Injection alternatives
 - other languages? (Rust, etc)
 
+### Running the Project
+- nav to the root of the preferred project
+- follow each build & run instructions as outlined in the project's README.md 
+- in another terminal tab or window, nav to the `load-tests`
+- start the simulation: `./gradlew gatlingRun --rerun-tasks`. See project
+  readme for additional options.
+
 ## Sources
 [Practical Performance Comparison of Spring Boot, Micronaut 1.3, Micronaut 2.0](https://micronaut.io/blog/2020-04-28-performance-comparison-spring-boot-micronaut.html)
 
