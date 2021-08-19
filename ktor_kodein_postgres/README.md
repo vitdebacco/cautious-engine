@@ -1,4 +1,4 @@
-# Random Addresses with http4k
+# Random Addresses with Ktor
 
 ## Build
 ### Gradle

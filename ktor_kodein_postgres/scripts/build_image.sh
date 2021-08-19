@@ -1,1 +1,1 @@
-docker build --tag=envylabs/cautious-engine_http4k .
+docker build --tag=envylabs/cautious-engine_ktor .
