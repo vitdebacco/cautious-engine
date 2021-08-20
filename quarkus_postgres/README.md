@@ -1,4 +1,15 @@
+# Random Addresses with Quarkus
+
+## Build
+### Gradle
+- Build: `./gradlew build`
+- Run: `scripts/start_jar.sh`
+### Docker
+- Build: `scripts/build_image.sh`
+- Run: `scripts/start_container.sh`
+
 # quarkus_postgres project
+This section is the Quarkus generated README. 
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

@@ -1,3 +1,13 @@
+# Random Addresses with Micronaut
+
+## Build
+### Gradle
+- Build: `./gradlew build`
+- Run: `scripts/start_jar.sh`
+### Docker
+- Build: `scripts/build_image.sh`
+- Run: `scripts/start_container.sh`
+
 ## Micronaut 2.3.2 Documentation
 
 - [User Guide](https://docs.micronaut.io/2.3.2/guide/index.html)
