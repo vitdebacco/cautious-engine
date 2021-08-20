@@ -12,4 +12,4 @@ COPY --from=cautious-engine_jooby-random_build /app/build/libs/jooby_postgres-1.
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-Xmx512m", "-jar", "/app/cautiousengine.jar"]
+ENTRYPOINT ["java", "-Xmx128m", "-jar", "/app/cautiousengine.jar"]
