@@ -1,1 +1,1 @@
-docker run -p 8080:8080 envylabs/cautious-engine_springboot
+docker run -p 8080:8080 envylabs/cautious-engine_springboot-random

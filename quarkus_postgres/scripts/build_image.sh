@@ -1,1 +1,1 @@
-docker build --tag=envylabs/cautious-engine_quarkus .
+docker build --tag=envylabs/cautious-engine_quarkus-random .

@@ -1,14 +1,14 @@
-FROM adoptopenjdk/openjdk15:alpine as cautious-engine-jooby_random-build
+FROM adoptopenjdk/openjdk15:alpine as cautious-engine_jooby-random_build
 
 WORKDIR /app
 COPY . ./
 
 RUN ./gradlew build
 
-FROM adoptopenjdk/openjdk15:alpine-jre as cautious-engine-jooby_random-release
+FROM adoptopenjdk/openjdk15:alpine-jre as cautious-engine_jooby-random_release
 
 WORKDIR /app
-COPY --from=cautious-engine-jooby_random-build /app/build/libs/jooby_postgres-1.0-SNAPSHOT-all.jar /app/cautiousengine.jar
+COPY --from=cautious-engine_jooby-random_build /app/build/libs/jooby_postgres-1.0-SNAPSHOT-all.jar /app/cautiousengine.jar
 
 EXPOSE 8080
 

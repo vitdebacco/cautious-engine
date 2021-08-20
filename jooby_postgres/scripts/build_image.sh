@@ -1,1 +1,1 @@
-docker build --tag=envylabs/cautious-engine_jooby .
+docker build --tag=envylabs/cautious-engine_jooby-random .

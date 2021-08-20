@@ -1,1 +1,1 @@
-docker build --tag=envylabs/cautious-engine_springboot .
+docker build --tag=envylabs/cautious-engine_springboot-random .
